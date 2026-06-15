@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Get Product by ID</title>
+
+    <style>
+        body{
+            font-family: Arial;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        input{
+            padding: 10px;
+            width: 200px;
+        }
+
+        button{
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+
+        .card{
+            border: 1px solid black;
+            width: 300px;
+            margin: 20px auto;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        img{
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Get Product by ID</h2>
+
+<input type="number" id="pid" placeholder="Enter Product ID (1-20)">
+<button onclick="getProduct()">Get Product</button>
+
+<div id="box"></div>
+
+<script>
+
+function getProduct(){
+
+    let id = document.getElementById("pid").value;
+
+    if(id === ""){
+        alert("Please enter product id");
+        return;
+    }
+
+    fetch(`https://fakestoreapi.com/products/${id}`)
+        .then(res => res.json())
+        .then(data => displayProduct(data))
+        .catch(err => console.log(err));
+}
+
+function displayProduct(product){
+
+    let box = document.getElementById("box");
+
+    box.innerHTML = `
+        <div class="card">
+            <img src="${product.image}" />
+            <h3>${product.title}</h3>
+            <p>Price: ₹${product.price}</p>
+            <p>${product.description.slice(0, 80)}...</p>
+        </div>
+    `;
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Joke API</title>
+
+    <style>
+        body{
+            font-family: Arial;
+            text-align: center;
+            margin-top: 80px;
+        }
+
+        button{
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        #box{
+            margin-top: 30px;
+            font-size: 22px;
+            width: 60%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body>
+
+<h1>😂 Joke Generator</h1>
+
+<button onclick="getJoke()">Get Joke</button>
+
+<div id="box"></div>
+
+<script>
+kkkkkkkkkkkkkkkkkkkkkkkk
+function getJoke(){
+
+    fetch("https://v2.jokeapi.dev/joke/Any")
+        .then(res => res.json())
+        .then(data => {
+
+            let box = document.getElementById("box");
+
+            if(data.type === "single"){
+
+                box.innerHTML = data.joke;
+
+            }else{
+
+                box.innerHTML = `
+                    <p><b>${data.setup}</b></p>
+                    <p>${data.delivery}</p>
+                `;
+            }
+
+        })  
+        .catch(err => {
+            console.log("Error:", err);
+        });
+}
+
+</script>
+
+</body>
+</html>
