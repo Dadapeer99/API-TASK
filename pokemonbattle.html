@@ -1,0 +1,83 @@
+<!-- https://pokeapi.co/api/v2/pokemon?limit=1000 -->
+<html>
+<head>
+    <title>Pokémon Battle</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial;
+        }
+
+        img {
+            width: 100px;
+        }
+
+        .battle {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>⚡ Pokémon Battle ⚡</h1>
+
+<input id="p1" placeholder="pikachu">
+<input id="p2" placeholder="charmander">
+<button onclick="battle()">Fight</button>
+
+<div id="result"></div>
+
+<script>
+async function battle() {
+    let name1 = document.getElementById("p1").value;
+    let name2 = document.getElementById("p2").value;
+
+    let r1 = await fetch(`https://pokeapi.co/api/v2/pokemon/${name1}`);
+    let r2 = await fetch(`https://pokeapi.co/api/v2/pokemon/${name2}`);
+
+    if (!r1.ok || !r2.ok) {
+        document.getElementById("result").innerHTML =
+            "<h3>Pokémon not found!</h3>";
+        return;
+    }
+
+    let p1 = await r1.json();
+    let p2 = await r2.json();
+
+    let attack1 = p1.stats[1].base_stat;
+    let attack2 = p2.stats[1].base_stat;
+
+    let winner =
+        attack1 > attack2 ? p1.name :
+        attack2 > attack1 ? p2.name :
+        "Tie";
+
+    document.getElementById("result").innerHTML = `
+        <div class="battle">
+            <div>
+                <img src="${p1.sprites.front_default}">
+                <h3>${p1.name}</h3>
+                <p>Attack: ${attack1}</p>
+            </div>
+
+            <div>
+                <h2>VS</h2>
+            </div>
+
+            <div>
+                <img src="${p2.sprites.front_default}">
+                <h3>${p2.name}</h3>
+                <p>Attack: ${attack2}</p>
+            </div>
+        </div>
+
+        <h2>🏆 Winner: ${winner.toUpperCase()}</h2>
+    `;
+}
+</script>
+
+</body>
+</html>
